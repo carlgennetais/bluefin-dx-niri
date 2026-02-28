@@ -1,4 +1,4 @@
-# Default Brewfile for bluepilot
+# Default Brewfile for bluefin-dx-niri
 # Add your favorite brew packages here
 # 
 # Examples:
@@ -11,6 +11,7 @@ brew "rg"         # ripgrep - faster grep
 
 # Development tools
 brew "gh"         # GitHub CLI
+brew "glab"        # Gitlab CLI
 brew "git"        # Git version control
 
 # Shell enhancements  
@@ -20,3 +21,4 @@ brew "zoxide"     # Smarter cd command
 # Utilities
 brew "htop"       # Interactive process viewer
 brew "tmux"       # Terminal multiplexer
+brew "neovim"

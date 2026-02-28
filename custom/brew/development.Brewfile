@@ -8,7 +8,7 @@
 # brew "helm"           # Kubernetes package manager
 
 # Cloud tools
-# brew "awscli"         # AWS CLI
+brew "awscli"         # AWS CLI
 # brew "azure-cli"      # Azure CLI
 
 # Programming languages and tools
@@ -24,3 +24,5 @@
 # Debugging and profiling
 # brew "gdb"            # GNU debugger
 # brew "valgrind"       # Memory debugging tool
+brew "byobu" 
+brew "tmux" 

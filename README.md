@@ -10,6 +10,39 @@ This template uses the **multi-stage build architecture** from , combining resou
 
 > Be the one who moves, not the one who is moved.
 
+## What Makes this Different
+
+Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bluefin — with a niri desktop stack layered on top.
+
+### Desktop Environment
+
+- **[niri](https://github.com/niri-wm/niri)** — scrollable-tiling Wayland compositor, runs as an additional session alongside GNOME
+- **[DMS (DankMaterialShell)](https://danklinux.com)** — Material 3-inspired QtQuick shell for niri, auto-starts with the niri session
+- **[dms-greeter](https://danklinux.com/docs/dankgreeter/)** — replaces GDM with a greetd-based greeter matching the DMS aesthetic
+- **[xwayland-satellite](https://github.com/Supreeeme/xwayland-satellite)** — rootless XWayland for running X11 apps under niri
+- **waybar**, **fuzzel**, **swaylock**, **alacritty** — pulled in as niri companion packages
+
+### Applications (Build-time)
+
+- **[Ghostty](https://ghostty.org)** — GPU-accelerated terminal emulator (`scottames/ghostty` COPR)
+- **[Vicinae](https://github.com/vicinaehq/vicinae)** — fast native desktop launcher / Raycast alternative (`quadratech188/vicinae` COPR)
+
+### CLI Tools (Homebrew, installed at runtime)
+
+- `bat`, `eza`, `fd`, `rg` — modern replacements for cat/ls/find/grep
+- `gh`, `glab` — GitHub and GitLab CLIs
+- `starship`, `zoxide` — shell prompt and smarter `cd`
+- `htop`, `tmux`, `neovim`
+
+### Configuration Changes
+
+- **Display manager**: GDM → greetd, configured to launch `dms-greeter --command niri`
+- **systemd user service**: `dms.service` wired to start with `niri.service` for all users
+
+*Last updated: 2026-02-28*
+
+---
+
 ## Guided Copilot Mode
 
 Here are the steps to guide copilot to make your own repo, or just use it like a regular image template.
