@@ -107,7 +107,7 @@ echo "::endgroup::"
 
 echo "::group:: Install Vicinae"
 
-# vicinae requires cmark-gfm from a coprdep repo (quadratech188/cmark-gfm)
+# vicinae requires cmark-gfm from a coprdep repo  (quadratech188/cmark-gfm)
 dnf5 -y copr enable quadratech188/vicinae
 dnf5 -y copr disable quadratech188/vicinae
 dnf5 -y install \
