@@ -28,6 +28,9 @@ echo "::endgroup::"
 
 echo "::group:: Copy Custom Files"
 
+# qwerty-fr XKB keyboard layout
+cp /ctx/build/files/us_qwerty-fr /usr/share/X11/xkb/symbols/
+
 # Copy Brewfiles to standard location
 mkdir -p /usr/share/ublue-os/homebrew/
 cp /ctx/custom/brew/*.Brewfile /usr/share/ublue-os/homebrew/
