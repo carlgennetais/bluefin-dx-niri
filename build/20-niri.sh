@@ -9,8 +9,6 @@ set -eoux pipefail
 # along with:
 #   - DMS (DankMaterialShell) - Material 3 shell for niri/Hyprland
 #   - dms-greeter  - greetd-based greeter (replaces GDM)
-#   - Ghostty      - GPU-accelerated terminal emulator
-#   - Vicinae      - Fast native desktop launcher
 ###############################################################################
 
 # Source helper functions
@@ -97,25 +95,19 @@ ln -sf /usr/lib/systemd/user/dms.service \
 echo "DMS wired to niri.service"
 echo "::endgroup::"
 
-echo "::group:: Install Ghostty"
-
-copr_install_isolated "scottames/ghostty" \
-  ghostty
-
-echo "Ghostty installed"
-echo "::endgroup::"
-
-echo "::group:: Install Vicinae"
-
-# vicinae requires cmark-gfm from a coprdep repo  (quadratech188/cmark-gfm)
-dnf5 -y copr enable quadratech188/vicinae
-dnf5 -y copr disable quadratech188/vicinae
-dnf5 -y install \
-  --enablerepo=copr:copr.fedorainfracloud.org:quadratech188:vicinae \
-  --enablerepo=coprdep:copr.fedorainfracloud.org:quadratech188:cmark-gfm \
-  vicinae
-
-echo "Vicinae installed"
-echo "::endgroup::"
+# echo "::group:: Remove GNOME Desktop"
+#
+# # Remove GNOME Shell and related packages
+# dnf5 remove -y \
+#     gnome-shell \
+#     gnome-shell-extension* \
+#     gnome-terminal \
+#     gnome-software \
+#     gnome-control-center \
+#     nautilus \
+#     gdm
+#
+# echo "GNOME desktop removed"
+# echo "::endgroup::"
 
 echo "Niri desktop stack installation complete!"

@@ -14,10 +14,10 @@ install-default-apps:
 
 # Install development tools via Homebrew
 [group('Apps')]
-install-dev-tools:
+install-work-tools:
     #!/usr/bin/env bash
     echo "Installing development tools via Homebrew..."
-    brew bundle --file /usr/share/ublue-os/homebrew/development.Brewfile
+    brew bundle --file /usr/share/ublue-os/homebrew/work.Brewfile
 
 # Install fonts via Homebrew
 [group('Apps')]
@@ -32,8 +32,8 @@ install-all-brew:
     #!/usr/bin/env bash
     echo "Installing all applications from Brewfiles..."
     brew bundle --file /usr/share/ublue-os/homebrew/default.Brewfile
-    brew bundle --file /usr/share/ublue-os/homebrew/development.Brewfile
     brew bundle --file /usr/share/ublue-os/homebrew/fonts.Brewfile
+		# brew bundle --file /usr/share/ublue-os/homebrew/work.Brewfile
 
 # Install JetBrains Toolbox for managing JetBrains IDEs
 [group('Apps')]

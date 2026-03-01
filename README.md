@@ -1,10 +1,10 @@
 # bluefin-dx-niri
 
-A template for building custom bootc operating system images based on the lessons from [Universal Blue](https://universal-blue.org/) and [Bluefin](https://projectbluefin.io). It is designed to be used manually, but is optimized to be bootstraped by GitHub Copilot. After set up you'll have your own custom Linux. 
+A template for building custom bootc operating system images based on the lessons from [Universal Blue](https://universal-blue.org/) and [Bluefin](https://projectbluefin.io). It is designed to be used manually, but is optimized to be bootstraped by GitHub Copilot. After set up you'll have your own custom Linux.
 
 This template uses the **multi-stage build architecture** from , combining resources from multiple OCI containers for modularity and maintainability. See the [Architecture](#architecture) section below for details.
 
-**Unlike previous templates, you are not modifying Bluefin and making changes.**: You are assembling your own Bluefin in the same exact way that Bluefin, Aurora, and Bluefin LTS are built. This is way more flexible and better for everyone since the image-agnostic and desktop things we love about Bluefin lives in @projectbluefin/common. 
+**Unlike previous templates, you are not modifying Bluefin and making changes.**: You are assembling your own Bluefin in the same exact way that Bluefin, Aurora, and Bluefin LTS are built. This is way more flexible and better for everyone since the image-agnostic and desktop things we love about Bluefin lives in @projectbluefin/common.
 
  Instead, you create your own OS repository based on this template, allowing full customization while leveraging Bluefin's robust build system and shared components.
 
@@ -20,7 +20,6 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
 - **[DMS (DankMaterialShell)](https://danklinux.com)** — Material 3-inspired QtQuick shell for niri, auto-starts with the niri session
 - **[dms-greeter](https://danklinux.com/docs/dankgreeter/)** — replaces GDM with a greetd-based greeter matching the DMS aesthetic
 - **[xwayland-satellite](https://github.com/Supreeeme/xwayland-satellite)** — rootless XWayland for running X11 apps under niri
-- **waybar**, **fuzzel**, **swaylock**, **alacritty** — pulled in as niri companion packages
 
 ### Applications (Build-time)
 
@@ -58,6 +57,7 @@ Use @projectbluefin/bluefin-dx-niri as a template, name the OS the repository na
 ## What's Included
 
 ### Build System
+
 - Automated builds via GitHub Actions on every commit
 - Awesome self hosted Renovate setup that keeps all your images and actions up to date.
 - Automatic cleanup of old images (90+ days) to keep it tidy
@@ -71,22 +71,26 @@ Use @projectbluefin/bluefin-dx-niri as a template, name the OS the repository na
   - See checklist below to enable these as they take some manual configuration
 
 ### Homebrew Integration
+
 - Pre-configured Brewfiles for easy package installation and customization
 - Includes curated collections: development tools, fonts, CLI utilities. Go nuts.
 - Users install packages at runtime with `brew bundle`, aliased to premade `ujust commands`
 - See [custom/brew/README.md](custom/brew/README.md) for details
 
 ### Flatpak Support
+
 - Ship your favorite flatpaks
 - Automatically installed on first boot after user setup
 - See [custom/flatpaks/README.md](custom/flatpaks/README.md) for details
 
 ### ujust Commands
+
 - User-friendly command shortcuts via `ujust`
 - Pre-configured examples for app installation and system maintenance for you to customize
 - See [custom/ujust/README.md](custom/ujust/README.md) for details
 
 ### Build Scripts
+
 - Modular numbered scripts (10-, 20-, 30-) run in order
 - Example scripts included for third-party repositories and desktop replacement
 - Helper functions for safe COPR usage
@@ -114,23 +118,26 @@ Important: Change `bluefin-dx-niri` to your repository name in these 6 files:
 - Go to the "Actions" tab in your repository
 - Click "I understand my workflows, go ahead and enable them"
 
-Your first build will start automatically! 
+Your first build will start automatically!
 
 Note: Image signing is disabled by default. Your images will build successfully without any signing keys. Once you're ready for production, see "Optional: Enable Image Signing" below.
 
 ### 4. Customize Your Image
 
 Choose your base image in `Containerfile` (line 23):
+
 ```dockerfile
 FROM ghcr.io/ublue-os/bluefin:stable
 ```
 
 Add your packages in `build/10-build.sh`:
+
 ```bash
 dnf5 install -y package-name
 ```
 
 Customize your apps:
+
 - Add Brewfiles in `custom/brew/` ([guide](custom/brew/README.md))
 - Add Flatpaks in `custom/flatpaks/` ([guide](custom/flatpaks/README.md))
 - Add ujust commands in `custom/ujust/` ([guide](custom/ujust/README.md))
@@ -150,6 +157,7 @@ All changes should be made via pull requests:
 ### 6. Deploy Your Image
 
 Switch to your image:
+
 ```bash
 sudo bootc switch ghcr.io/your-username/your-repo-name:stable
 sudo systemctl reboot
@@ -169,11 +177,13 @@ Image signing is disabled by default to let you start building immediately. Howe
 ### Setup Instructions
 
 1. Generate signing keys:
+
 ```bash
 cosign generate-key-pair
 ```
 
 This creates two files:
+
 - `cosign.key` (private key) - Keep this secret
 - `cosign.pub` (public key) - Commit this to your repository
 
@@ -277,6 +287,7 @@ Alternative approach using a temporary tag for clarity:
 ```
 
 **Parameters:**
+
 - `--max-layers`: Maximum number of layers for the rechunked image (typically 67 for optimal balance)
 - The first image reference is the source (input)
 - The second image reference is the destination (output)
@@ -284,17 +295,20 @@ Alternative approach using a temporary tag for clarity:
   - You can also use different tags (e.g., `-rechunked` suffix) and then retag if preferred
 
 **References:**
+
 - [CoreOS rpm-ostree build-chunked-oci documentation](https://coreos.github.io/rpm-ostree/build-chunked-oci/)
 - [bootc documentation](https://containers.github.io/bootc/)
 
 ### After Enabling Production Features
 
 Your workflow will:
+
 - Sign all images with your key
 - Generate and attach SBOMs
 - Provide full supply chain transparency
 
 Users can verify your images with:
+
 ```bash
 cosign verify --key cosign.pub ghcr.io/your-username/your-repo-name:stable
 ```
@@ -313,6 +327,7 @@ This template follows the **multi-stage build architecture** from @projectbluefi
 ### Multi-Stage Build Pattern
 
 **Stage 1: Context (ctx)** - Combines resources from multiple sources:
+
 - Local build scripts (`/build`)
 - Local custom files (`/custom`)
 - **@projectbluefin/common** - Desktop configuration shared with Aurora
@@ -321,6 +336,7 @@ This template follows the **multi-stage build architecture** from @projectbluefi
 - **@ublue-os/brew** - Homebrew integration
 
 **Stage 2: Base Image** - Default options:
+
 - `ghcr.io/ublue-os/silverblue-main:latest` (Fedora-based, default)
 - `quay.io/centos-bootc/centos-bootc:stream10` (CentOS-based alternative)
 
@@ -342,6 +358,7 @@ COPY --from=ghcr.io/ublue-os/brew:latest /system_files /oci/brew
 ```
 
 Your build scripts can access these files at:
+
 - `/ctx/oci/base/` - Base system configuration
 - `/ctx/oci/common/` - Shared desktop configuration
 - `/ctx/oci/branding/` - Branding assets
@@ -374,6 +391,7 @@ just run-vm-qcow2       # Test in browser-based VM
 ## Security
 
 This template provides security features for production use:
+
 - Optional SBOM generation (Software Bill of Materials) for supply chain transparency
 - Optional image signing with cosign for cryptographic verification
 - Automated security updates via Renovate

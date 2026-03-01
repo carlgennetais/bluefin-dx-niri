@@ -1,6 +1,6 @@
 export image_name := env("IMAGE_NAME", "bluefin-dx-niri")
 export default_tag := env("DEFAULT_TAG", "stable")
-export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest@sha256:903c01d110b8533f8891f07c69c0ba2377f8d4bc7e963311082b7028c04d529d")
+export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest@sha256:181d627c3a644a4275fa324af1dbed852c9dba6eacd8ea0be071bdbb0fe1547f")
 
 alias build-vm := build-qcow2
 alias rebuild-vm := rebuild-qcow2
