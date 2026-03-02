@@ -31,6 +31,16 @@ echo "::group:: Copy Custom Files"
 # qwerty-fr XKB keyboard layout
 cp /ctx/build/files/us_qwerty-fr /usr/share/X11/xkb/symbols/
 
+# Register layout in XKB rules so it is discoverable by name
+# (GNOME Settings, libxkbcommon, niri xkb config, localectl).
+# evdev and base rules are identical separate files — patch both.
+for lst in /usr/share/X11/xkb/rules/evdev.lst /usr/share/X11/xkb/rules/base.lst; do
+  sed -i '/^! layout$/a\  us_qwerty-fr              English (US, qwerty-fr)' "$lst"
+done
+for xml in /usr/share/X11/xkb/rules/evdev.xml /usr/share/X11/xkb/rules/base.xml; do
+  sed -i 's|  </layoutList>|    <layout>\n      <configItem>\n        <name>us_qwerty-fr</name>\n        <shortDescription>en</shortDescription>\n        <description>English (US, qwerty-fr)</description>\n      </configItem>\n    </layout>\n  </layoutList>|' "$xml"
+done
+
 # Copy Brewfiles to standard location
 mkdir -p /usr/share/ublue-os/homebrew/
 cp /ctx/custom/brew/*.Brewfile /usr/share/ublue-os/homebrew/
