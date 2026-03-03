@@ -22,6 +22,18 @@ dnf5 install -y \
   xwayland-satellite
 
 echo "niri stack installed"
+
+# niri ships a wiki doc file with a non-ASCII hyphen (U+2010) in its name:
+# Layer‐Shell-Components.md — ostree refuses to deploy it under a C locale.
+find /usr/share/doc/niri -name "*" | python3 -c "
+import sys, os
+for f in sys.stdin:
+    f = f.rstrip()
+    if any(ord(c) > 127 for c in f):
+        os.remove(f)
+        print(f'Removed non-ASCII filename: {f!r}')
+"
+
 echo "::endgroup::"
 
 echo "::group:: Install DMS (DankMaterialShell)"
