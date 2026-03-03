@@ -10,6 +10,9 @@ Branch=stable
 [Flatpak Preinstall org.videolan.VLC]
 Branch=stable
 
+[Flatpak Preinstall com.slack.Slack]
+Branch=stable
+
 # Web Browsers
 [Flatpak Preinstall org.mozilla.firefox]
 Branch=stable

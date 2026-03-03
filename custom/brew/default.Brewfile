@@ -2,6 +2,9 @@
 
 # some of these are already installed when running ujust bluefin-cli
 
+# already installed by bluefin-dx :
+# fzf, rclone
+
 # Modern CLI tools
 brew "bat"        # cat with syntax highlighting
 brew "eza"        # Modern replacement for ls
@@ -13,7 +16,6 @@ brew "ncdu"
 brew "lazygit"
 brew "lazydocker"
 brew "fdupes"
-# fzf is already installed in /usr/bin/
 
 # Shell enhancements  
 brew "tmux"       # Terminal multiplexer
@@ -33,3 +35,11 @@ brew "git"        # Git version control
 brew "uv"
 brew "chezmoi"
 
+# media
+brew "ffmpeg"
+brew "mat2"
+brew "imagemagick"
+
+# pdf
+brew "qpdf"
+brew "espanso"
