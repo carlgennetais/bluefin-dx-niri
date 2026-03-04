@@ -19,6 +19,7 @@ echo "::group:: Install niri and Wayland utilities"
 
 dnf5 install -y \
   niri \
+  wl-mirror \
   xwayland-satellite
 
 echo "niri stack installed"
