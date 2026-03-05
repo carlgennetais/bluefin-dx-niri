@@ -1,3 +1,6 @@
+[Flatpak Preinstall com.bitwarden.desktop]
+Branch=stable
+
 [Flatpak Preinstall com.nextcloud.desktopclient.nextcloud]
 Branch=stable
 
