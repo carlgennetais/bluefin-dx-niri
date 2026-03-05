@@ -5,6 +5,8 @@
 # already installed by bluefin-dx :
 # fzf, rclone
 
+# TODO: use chezmoi instead? https://www.chezmoi.io/user-guide/advanced/install-packages-declaratively/
+
 # Modern CLI tools
 brew "bat"        # cat with syntax highlighting
 brew "eza"        # Modern replacement for ls
