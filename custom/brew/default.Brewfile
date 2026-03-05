@@ -42,4 +42,4 @@ brew "imagemagick"
 
 # pdf
 brew "qpdf"
-brew "espanso"
+# brew "espanso"
