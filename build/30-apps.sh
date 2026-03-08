@@ -19,6 +19,8 @@ echo "::group:: Install Ghostty"
 copr_install_isolated "scottames/ghostty" \
   ghostty
 
+dnf5 remove -y alacritty
+
 echo "Ghostty installed"
 echo "::endgroup::"
 
