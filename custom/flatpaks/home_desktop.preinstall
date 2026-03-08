@@ -1,6 +1,0 @@
-[Flatpak Preinstall com.nextcloud.desktopclient.nextcloud]
-Branch=stable
-
-[Flatpak Preinstall org.signal.Signal]
-Branch=stable
-

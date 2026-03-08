@@ -1,7 +1,0 @@
-[Flatpak Preinstall org.kde.okular]
-Branch=stable
-
-[Flatpak Preinstall io.dbeaver.DBeaverCommunity]
-Branch=stable
-
-
