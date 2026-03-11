@@ -21,6 +21,7 @@ dnf5 install -y \
   niri \
   wl-mirror \
   wtype \
+  hunspell-fr \
   xwayland-satellite
 
 echo "niri stack installed"
