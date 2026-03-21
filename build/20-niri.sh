@@ -17,12 +17,19 @@ source /ctx/build/copr-helpers.sh
 
 echo "::group:: Install niri and Wayland utilities"
 
+# niri: Wayland compositor
+# wl-mirror: mirror screen during presentations
+# wtype: Wayland keyboard to paste from launcher
+# hunspell-fr: French dictionary for electron apps like clickup
+# xwayland-satellite: XWayland support
+# adw-gtk3-theme: used by DMS to theme gtk system apps
 dnf5 install -y \
   niri \
+  xwayland-satellite \
   wl-mirror \
   wtype \
   hunspell-fr \
-  xwayland-satellite
+  adw-gtk3-theme
 
 echo "niri stack installed"
 
