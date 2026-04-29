@@ -59,7 +59,10 @@ dnf5 -y install \
   --enablerepo=copr:copr.fedorainfracloud.org:avengemedia:dms \
   --enablerepo=coprdep:copr.fedorainfracloud.org:avengemedia:danklinux \
   dms \
-  dms-greeter
+  dms-greeter \
+  ghostty
+
+dnf5 remove -y alacritty
 
 echo "DMS installed"
 echo "::endgroup::"
