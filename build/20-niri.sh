@@ -17,15 +17,15 @@ source /ctx/build/copr-helpers.sh
 
 echo "::group:: Install niri and Wayland utilities"
 
-# niri: Wayland compositor
+# niri: Wayland compositor, installed from source repo for fresher version
 # wl-mirror: mirror screen during presentations
 # wtype: Wayland keyboard to paste from launcher
 # hunspell-fr: French dictionary for electron apps like clickup
 # xwayland-satellite: XWayland support
 # adw-gtk3-theme: used by DMS to theme gtk system apps
 # qt6-qtwebsockets-devel: dependency for dms home assistant plugin
+copr_install_isolated "yalter/niri" niri
 dnf5 install -y \
-  niri \
   xwayland-satellite \
   wl-mirror \
   wtype \
