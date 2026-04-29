@@ -23,14 +23,12 @@ echo "::group:: Install niri and Wayland utilities"
 # hunspell-fr: French dictionary for electron apps like clickup
 # xwayland-satellite: XWayland support
 # adw-gtk3-theme: used by DMS to theme gtk system apps
-# qt6-qtwebsockets-devel: dependency for dms home assistant plugin
 copr_install_isolated "yalter/niri" niri
 dnf5 install -y \
   xwayland-satellite \
   wl-mirror \
   wtype \
   hunspell-fr \
-  qt6-qtwebsockets-devel \
   adw-gtk3-theme
 
 echo "niri stack installed"
