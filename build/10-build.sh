@@ -30,6 +30,8 @@ echo "::group:: Copy Custom Files"
 
 # qwerty-fr XKB keyboard layout
 cp /ctx/build/files/us_qwerty-fr /usr/share/X11/xkb/symbols/
+# qwerty-lafayette XKB keyboard layout
+cp /ctx/build/files/lafayette_linux_v0.9.xkb_custom /usr/share/X11/xkb/symbols/lafayette
 
 # Register layout in XKB rules so it is discoverable by name
 # (GNOME Settings, libxkbcommon, niri xkb config, localectl).
@@ -46,7 +48,7 @@ mkdir -p /usr/share/ublue-os/homebrew/
 cp /ctx/custom/brew/*.Brewfile /usr/share/ublue-os/homebrew/
 
 # Consolidate Just Files
-find /ctx/custom/ujust -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >> /usr/share/ublue-os/just/60-custom.just
+find /ctx/custom/ujust -iname '*.just' -exec printf "\n\n" \; -exec cat {} \; >>/usr/share/ublue-os/just/60-custom.just
 
 # Copy Flatpak preinstall files
 mkdir -p /etc/flatpak/preinstall.d/
