@@ -1,60 +1,22 @@
-###############################################################################
-# PROJECT NAME CONFIGURATION
-###############################################################################
-# Name: bluefin-dx-niri
-#
-# IMPORTANT: Change "bluefin-dx-niri" above to your desired project name.
-# This name should be used consistently throughout the repository in:
-#   - Justfile: export image_name := env("IMAGE_NAME", "your-name-here")
-#   - README.md: # your-name-here (title)
-#   - artifacthub-repo.yml: repositoryID: your-name-here
-#   - custom/ujust/README.md: localhost/your-name-here:stable (in bootc switch example)
-#
-# The project name defined here is the single source of truth for your
-# custom image's identity. When changing it, update all references above
-# to maintain consistency.
-###############################################################################
-
-###############################################################################
-# MULTI-STAGE BUILD ARCHITECTURE
-###############################################################################
-# This Containerfile follows the Bluefin architecture pattern as implemented in
-# @projectbluefin/distroless. The architecture layers OCI containers together:
-#
-# 1. Context Stage (ctx) - Combines resources from:
-#    - Local build scripts and custom files
-#    - @projectbluefin/common - Desktop configuration shared with Aurora 
-#    - @ublue-os/brew - Homebrew integration
-#
-# 2. Base Image Options:
-#    - `ghcr.io/ublue-os/silverblue-main:latest` (Fedora and GNOME)
-#    - `ghcr.io/ublue-os/base-main:latest` (Fedora and no desktop 
-#    - `quay.io/centos-bootc/centos-bootc:stream10 (CentOS-based)` 
-#
-# See: https://docs.projectbluefin.io/contributing/ for architecture diagram
-###############################################################################
-
-# Context stage - combine local and imported OCI container resources
+# Allow build scripts to be referenced without being copied into the final image
 FROM scratch AS ctx
-
-COPY build /build
-COPY custom /custom
-# Copy from OCI containers to distinct subdirectories to avoid conflicts
-# Note: Renovate can automatically update these :latest tags to SHA-256 digests for reproducibility
-COPY --from=ghcr.io/projectbluefin/common:latest /system_files /oci/common
-COPY --from=ghcr.io/ublue-os/brew:latest /system_files /oci/brew
+COPY build_files /
+COPY system_files /system_files
 
 # Base Image - Bluefin DX (developer variant)
-FROM ghcr.io/ublue-os/bluefin-dx:latest
+# Renovate keeps the digest pin up to date.
+FROM ghcr.io/ublue-os/bluefin-dx:latest@sha256:df4f9c85c34f373b72d81227d83777bf141fbc39d9ae438e72fd406bccdac31a
+## Other possible base images include:
+# FROM ghcr.io/ublue-os/bluefin-dx:stable
+# FROM ghcr.io/ublue-os/bluefin:latest
+# FROM ghcr.io/ublue-os/aurora-dx:latest
+#
+# ... and so on, here are more base images
+# Universal Blue Images: https://github.com/orgs/ublue-os/packages
+# Fedora base image: quay.io/fedora/fedora-bootc:44
+# CentOS base images: quay.io/centos-bootc/centos-bootc:stream10
 
-## Alternative base images, no desktop included (uncomment to use):
-# FROM ghcr.io/ublue-os/base-main:latest    
-# FROM quay.io/centos-bootc/centos-bootc:stream10
-
-## Alternative GNOME OS base image (uncomment to use):
-# FROM quay.io/gnome_infrastructure/gnome-build-meta:gnomeos-nightly
-
-### /opt
+### [IM]MUTABLE /opt
 ## Some bootable images, like Fedora, have /opt symlinked to /var/opt, in order to
 ## make it mutable/writable for users. However, some packages write files to this directory,
 ## thus its contents might be wiped out when bootc deploys an image, making it troublesome for
@@ -66,27 +28,14 @@ FROM ghcr.io/ublue-os/bluefin-dx:latest
 # RUN rm /opt && mkdir /opt
 
 ### MODIFICATIONS
-## Make modifications desired in your image and install packages by modifying the build scripts.
-## The following RUN directive mounts the ctx stage which includes:
-##   - Local build scripts from /build
-##   - Local custom files from /custom
-##   - Files from @projectbluefin/common at /oci/common
-##   - Files from @projectbluefin/branding at /oci/branding
-##   - Files from @ublue-os/artwork at /oci/artwork
-##   - Files from @ublue-os/brew at /oci/brew
-## Scripts are run in numerical order (10-build.sh, 20-example.sh, etc.)
+## make modifications desired in your image and install packages by modifying the build.sh script
+## the following RUN directive does all the things required to run "build.sh" as recommended.
 
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-  --mount=type=cache,dst=/var/cache \
-  --mount=type=cache,dst=/var/log \
-  --mount=type=tmpfs,dst=/tmp \
-  /ctx/build/10-build.sh
-
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-  --mount=type=cache,dst=/var/cache \
-  --mount=type=cache,dst=/var/log \
-  --mount=type=tmpfs,dst=/tmp \
-  /ctx/build/20-niri.sh
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
+    /ctx/build.sh
 
 ### LINTING
 ## Verify final image and contents are correct.

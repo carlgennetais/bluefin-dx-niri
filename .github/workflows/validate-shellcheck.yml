@@ -5,7 +5,7 @@ permissions:
 on:
   pull_request:
     paths:
-      - "build/**/*.sh"
+      - "build_files/**/*.sh"
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -26,7 +26,7 @@ jobs:
 
           set -xeuo pipefail
 
-          find "build" -iname '*.sh' -print0 | \
+          find "build_files" -iname '*.sh' -print0 | \
             while IFS= read -r -d '' script ; do \
               echo "::group:: ===$(basename "$script")==="
               shellcheck -x "$script"

@@ -25,7 +25,9 @@ jobs:
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@b9486682a19fe4ea2dd1263c11b4e0c1fe1838fe # v40.3.2
         with:
-          configurationFile: .github/renovate.json5
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
           LOG_LEVEL: 'debug'
+          # Without this, self-hosted Renovate finds no repository to work on
+          # and exits after logging "No repositories found".
+          RENOVATE_REPOSITORIES: '["${{ github.repository }}"]'
