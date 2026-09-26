@@ -1,16 +1,9 @@
-# Copilot Instructions for finpilot
+# Copilot Instructions for bluefin-dx-niri
 
-This repository uses comprehensive agent instructions. Please refer to the main documentation file:
+This repository uses shared agent instructions. Please refer to the main documentation file:
 
 **[AGENTS.md](../AGENTS.md)** in the repository root.
 
-This file contains:
-- Repository structure and organization
-- Build system details and workflows
-- Package management guidelines
-- Development best practices
-- Validation and testing procedures
-- Troubleshooting guides
-- Attribution requirements for AI agents
-
-All coding agents should consult AGENTS.md for detailed instructions on working with this bootc image template.
+It covers the repository layout, the build flow, where to add packages and
+configuration, ublue conventions, the pre-commit checklist, and attribution
+requirements for AI agents.
