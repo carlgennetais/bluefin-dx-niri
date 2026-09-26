@@ -64,8 +64,11 @@ which:
 
 Then `bootc container lint` validates the result. Lint requires that any user
 created by an RPM scriptlet has a matching `sysusers.d` entry, and that `/var`
-content created by scriptlets is declared in `tmpfiles.d` — both are shipped in
-`system_files/usr/lib/`.
+content created by scriptlets is declared in `tmpfiles.d`. Check whether the
+package already ships those (`rpm -ql pkg | grep -E 'sysusers|tmpfiles'`) before
+adding your own — `dms-greeter` ships both, and a second declaration of the same
+user is a trap, not a fix. `system_files/usr/lib/tmpfiles.d/greetd-dms.conf`
+covers what greetd itself leaves undeclared.
 
 ## Where to Add Things
 

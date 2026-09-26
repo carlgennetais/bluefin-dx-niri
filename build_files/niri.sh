@@ -11,9 +11,11 @@ set -ouex pipefail
 #
 # Static configuration for these lives in system_files/ and is overlaid by
 # build.sh after this script runs:
-#   /etc/greetd/config.toml            - greetd session
-#   /usr/lib/sysusers.d/greeter.conf   - greeter user (bootc lint)
+#   /etc/greetd/config.toml             - greetd session
 #   /usr/lib/tmpfiles.d/greetd-dms.conf - greetd /var content (bootc lint)
+#
+# The 'greeter' user and /var/cache/dms-greeter are declared by the dms-greeter
+# RPM's own sysusers.d/tmpfiles.d — do not redeclare them here.
 ###############################################################################
 
 # shellcheck source=/dev/null
