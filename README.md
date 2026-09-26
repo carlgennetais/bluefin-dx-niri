@@ -31,11 +31,6 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
 - `starship`, `zoxide` — shell prompt and smarter `cd`
 - `htop`, `tmux`, `neovim`
 
-### Keyboard Layouts
-
-- **qwerty-fr** (`us_qwerty-fr`) — registered in the XKB rules, so it is selectable by name in GNOME Settings, niri, and `localectl`
-- **qwerty-lafayette** (`lafayette`) — symbol file shipped, select it explicitly
-
 ### Removed/Disabled
 
 - `gdm` (replaced by greetd), `alacritty`
@@ -56,13 +51,12 @@ Containerfile                 # base image + the single RUN that calls build.sh
 image-template.env            # image name, org, description, default tag, BIB image
 Justfile                      # local build / disk image / VM recipes
 build_files/
-  build.sh                    # main build script (overlay, XKB rules, units)
+  build.sh                    # main build script (system_files overlay, units)
   niri.sh                     # niri + DMS + greetd package installs
   copr-helpers.sh             # copr_install_isolated helper
 system_files/                 # copied verbatim onto / during the build
   etc/greetd/config.toml
   usr/lib/sysusers.d/ , usr/lib/tmpfiles.d/
-  usr/share/X11/xkb/symbols/  # custom keyboard layouts
   usr/share/flatpak/preinstall.d/default.preinstall
   usr/share/ublue-os/homebrew/*.Brewfile
   usr/share/ublue-os/just/60-custom.just
@@ -81,7 +75,7 @@ disk_config/                  # bootc-image-builder configs (qcow2 / raw / ISO)
 | `ujust` recipe | `system_files/usr/share/ublue-os/just/60-custom.just` |
 | systemd unit enable/mask | `build_files/build.sh` |
 
-Everything under `system_files/` is copied with `cp -avf` **after** the package installs, so shipped config wins over RPM defaults.
+Everything under `system_files/` is copied onto `/` with `rsync -rvK` **after** the package installs, so shipped config wins over RPM defaults.
 
 ## Local Testing
 

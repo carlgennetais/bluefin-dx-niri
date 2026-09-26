@@ -42,7 +42,7 @@ Containerfile                 # base image + the single RUN that calls build.sh
 image-template.env            # image name, org, description, default tag, BIB image
 Justfile                      # local build / disk image / VM recipes
 build_files/
-  build.sh                    # main build script (overlay, XKB rules, units)
+  build.sh                    # main build script (system_files overlay, units)
   niri.sh                     # niri + DMS + greetd package installs
   copr-helpers.sh             # copr_install_isolated helper
 system_files/                 # copied verbatim onto / during the build
@@ -56,10 +56,11 @@ The `ctx` stage in the `Containerfile` copies `build_files/` to `/` and
 which:
 
 1. runs `/ctx/niri.sh` (package installs), **then**
-2. `cp -avf /ctx/system_files/. /` — the overlay comes *after* the installs so
-   shipped config wins over RPM defaults (e.g. `/etc/greetd/config.toml`),
-3. patches the XKB rule files in place (they belong to the base image),
-4. enables systemd units.
+2. `rsync -rvK /ctx/system_files/ /` — the overlay comes *after* the installs so
+   shipped config wins over RPM defaults (e.g. `/etc/greetd/config.toml`).
+   `-K` is required because some base image directories are symlinks, which
+   `cp` refuses to overwrite with a directory.
+3. enables systemd units.
 
 Then `bootc container lint` validates the result. Lint requires that any user
 created by an RPM scriptlet has a matching `sysusers.d` entry, and that `/var`
