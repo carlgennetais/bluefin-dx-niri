@@ -39,8 +39,19 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
 
 - **Display manager**: GDM → greetd, configured to launch `dms-greeter --command niri`
 - **systemd user service**: `dms.service` wired to start with `niri.service` for all users
+- **Qt6 kept current**: the build upgrades `qt6-*` to the latest Fedora packages.
+  The base image is rebuilt on its own cadence and can lag Fedora, while the DMS
+  COPRs always build against current Fedora. Because RPM dependencies only track
+  whole symbol-version sets, a Qt mismatch installs cleanly and then fails at
+  runtime — quickshell won't start, so the greeter never appears and the machine
+  boots to a black screen. The build now also smoke-tests `quickshell --version`
+  and fails rather than shipping an image that cannot reach a desktop.
+- **Greeter home**: `xdg-desktop-portal` is masked under `/var/lib/greeter`, the
+  home `dms-greeter`'s own `sysusers.d` declares, instead of `/var/lib/greetd`
+  (which belongs to the greetd daemon user and is reset by greetd's own
+  `tmpfiles.d` rule)
 
-*Last updated: 2026-09-26*
+*Last updated: 2026-09-28*
 
 ---
 
