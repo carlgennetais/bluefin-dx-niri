@@ -54,6 +54,16 @@ echo "::endgroup::"
 
 echo "::group:: Install DMS (DankMaterialShell)"
 
+# The base image lags Fedora updates (bluefin-dx is rebuilt on its own cadence),
+# but the DMS COPRs build against *current* Fedora. quickshell links Qt
+# private-API symbols, and qt6-qtbase 6.11.2 promoted
+# QUntypedPropertyBinding(QPropertyBindingPrivate*) from @Qt_6.11_PRIVATE_API to
+# the public @Qt_6 set. RPM dependencies only track whole symbol-version sets,
+# so the mismatch installs cleanly and fails at runtime: quickshell exits 127,
+# the greeter UI never starts, niri quits, greetd hits its restart limit, and
+# the machine boots to a black screen. Keep Qt aligned with the COPRs.
+dnf5 -y upgrade 'qt6-*'
+
 # dms lives in avengemedia/dms but requires quickshell from avengemedia/danklinux
 # (added automatically as a coprdep when enabling avengemedia/dms).
 # Disable the main repo after enable; reference both sections explicitly on install.
@@ -67,6 +77,15 @@ dnf5 -y install \
   ghostty
 
 dnf5 remove -y alacritty
+
+# Gate the build on quickshell actually starting. A Qt ABI mismatch is invisible
+# to dnf5 -- it resolves and installs fine, then the desktop never comes up.
+if ! qs_version=$(quickshell --version 2>&1); then
+  echo "ERROR: quickshell cannot start -- Qt ABI mismatch:" >&2
+  echo "$qs_version" >&2
+  exit 1
+fi
+echo "quickshell smoke test passed: $qs_version"
 
 echo "DMS installed"
 echo "::endgroup::"
