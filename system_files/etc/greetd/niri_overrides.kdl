@@ -1,0 +1,18 @@
+// Keyboard layout for the login screen.
+//
+// dms-greeter starts niri from a launcher-generated config that carries no
+// `input` section (see /usr/share/doc/dms-greeter/examples/dms-niri.kdl), so
+// the greeter falls back to org.freedesktop.locale1 — it does not read the
+// logged-in user's niri config. Without this file the password field is a US
+// layout regardless of what the session uses.
+//
+// niri_overrides.kdl is the documented hook for local tweaks; see
+// /usr/share/doc/dms-greeter/README.md.
+input {
+    keyboard {
+        xkb {
+            layout "fr"
+            variant "ergol"
+        }
+    }
+}

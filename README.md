@@ -38,6 +38,10 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
 ### Configuration Changes
 
 - **Display manager**: GDM → greetd, configured to launch `dms-greeter --command niri`
+- **Greeter keyboard layout**: `etc/greetd/niri_overrides.kdl` pins the login
+  screen to `fr(ergol)`. dms-greeter's launcher-generated niri config has no
+  `input` section, so the greeter otherwise falls back to
+  `org.freedesktop.locale1` and ignores the session's own layout
 - **systemd user service**: `dms.service` wired to start with `niri.service` for all users
 - **Qt6 kept current**: the build upgrades `qt6-*` to the latest Fedora packages.
   The base image is rebuilt on its own cadence and can lag Fedora, while the DMS
@@ -51,7 +55,7 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
   (which belongs to the greetd daemon user and is reset by greetd's own
   `tmpfiles.d` rule)
 
-*Last updated: 2026-09-28*
+*Last updated: 2026-09-29*
 
 ---
 
@@ -66,7 +70,7 @@ build_files/
   niri.sh                     # niri + DMS + greetd package installs
   copr-helpers.sh             # copr_install_isolated helper
 system_files/                 # copied verbatim onto / during the build
-  etc/greetd/config.toml
+  etc/greetd/config.toml , etc/greetd/niri_overrides.kdl
   usr/lib/sysusers.d/ , usr/lib/tmpfiles.d/
   usr/share/flatpak/preinstall.d/default.preinstall
   usr/share/ublue-os/homebrew/*.Brewfile
