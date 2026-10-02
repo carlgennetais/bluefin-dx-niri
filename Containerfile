@@ -5,7 +5,7 @@ COPY system_files /system_files
 
 # Base Image - Bluefin DX (developer variant)
 # Renovate keeps the digest pin up to date.
-FROM ghcr.io/ublue-os/bluefin-dx:latest@sha256:df4f9c85c34f373b72d81227d83777bf141fbc39d9ae438e72fd406bccdac31a
+FROM ghcr.io/ublue-os/bluefin-dx:latest@sha256:929be09454237c310fb3b415ea8f590ea99d5b93aa087cea0d51b62871ca976f
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bluefin-dx:stable
 # FROM ghcr.io/ublue-os/bluefin:latest
