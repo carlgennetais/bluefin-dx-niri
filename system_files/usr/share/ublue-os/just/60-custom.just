@@ -21,12 +21,19 @@ install-work-tools:
     echo "Installing development tools via Homebrew..."
     brew bundle --file /usr/share/ublue-os/homebrew/work.Brewfile
 
-# Install fonts via Homebrew
+# Install Bluefin's Nerd Fonts plus this image's extras via Homebrew
 [group('Apps')]
 install-fonts:
     #!/usr/bin/env bash
+    set -euo pipefail
+    # projectbluefin/common is moving its Nerd Fonts from fonts.Brewfile to
+    # fonts-dev.Brewfile (fonts.Brewfile becomes office fonts); use whichever
+    # the base image ships.
+    BASE_FONTS=/usr/share/ublue-os/homebrew/fonts-dev.Brewfile
+    [[ -f "$BASE_FONTS" ]] || BASE_FONTS=/usr/share/ublue-os/homebrew/fonts.Brewfile
     echo "Installing fonts via Homebrew..."
-    brew bundle --file /usr/share/ublue-os/homebrew/fonts.Brewfile
+    brew bundle --file "$BASE_FONTS"
+    brew bundle --file /usr/share/ublue-os/homebrew/niri-fonts.Brewfile
 
 # Install all Brewfiles at once
 [group('Apps')]
@@ -34,7 +41,7 @@ install-all-brew:
     #!/usr/bin/env bash
     echo "Installing all applications from Brewfiles..."
     brew bundle --file /usr/share/ublue-os/homebrew/default.Brewfile
-    brew bundle --file /usr/share/ublue-os/homebrew/fonts.Brewfile
+    ujust install-fonts
 
 # Install JetBrains Toolbox for managing JetBrains IDEs
 [group('Apps')]

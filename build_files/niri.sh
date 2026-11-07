@@ -6,16 +6,18 @@ set -ouex pipefail
 # Niri Desktop Stack
 ###############################################################################
 # Installs niri (scrollable-tiling Wayland compositor) alongside GNOME, plus:
-#   - DMS (DankMaterialShell) - Material 3 shell for niri
-#   - dms-greeter            - greetd-based greeter (replaces GDM)
+#   - DMS (Dux Modular Shell)  - Material 3 shell for niri (ex-DankMaterialShell)
+#   - dux-greeter              - greetd-based greeter (replaces GDM)
+#   - dux-files                - Dux Labs file manager
 #
 # Static configuration for these lives in system_files/ and is overlaid by
 # build.sh after this script runs:
 #   /etc/greetd/config.toml             - greetd session
 #   /usr/lib/tmpfiles.d/greetd-dms.conf - greetd /var content (bootc lint)
 #
-# The 'greeter' user and /var/cache/dms-greeter are declared by the dms-greeter
-# RPM's own sysusers.d/tmpfiles.d — do not redeclare them here.
+# The 'greeter' user and /var/cache/dms-greeter are declared by the dux-greeter
+# RPM's own sysusers.d/tmpfiles.d (still named dms-greeter.conf) — do not
+# redeclare them here.
 ###############################################################################
 
 # shellcheck source=/dev/null
@@ -52,7 +54,7 @@ for f in sys.stdin:
 
 echo "::endgroup::"
 
-echo "::group:: Install DMS (DankMaterialShell)"
+echo "::group:: Install DMS (Dux Modular Shell)"
 
 # The base image lags Fedora updates (bluefin-dx is rebuilt on its own cadence),
 # but the DMS COPRs build against *current* Fedora. quickshell links Qt
@@ -64,16 +66,26 @@ echo "::group:: Install DMS (DankMaterialShell)"
 # the machine boots to a black screen. Keep Qt aligned with the COPRs.
 dnf5 -y upgrade 'qt6-*'
 
-# dms lives in avengemedia/dms but requires quickshell from avengemedia/danklinux
-# (added automatically as a coprdep when enabling avengemedia/dms).
+# DankMaterialShell became Dux Modular Shell (DMS 2.0) and moved from the
+# AvengeMedia COPRs to Dux Labs. dms lives in duxlabs/dms; quickshell, the
+# greeter, dux-files, dux-gop and ghostty live in duxlabs/dux-repo (added
+# automatically as a coprdep when enabling duxlabs/dms).
 # Disable the main repo after enable; reference both sections explicitly on install.
-dnf5 -y copr enable avengemedia/dms
-dnf5 -y copr disable avengemedia/dms
+#
+# Binaries and units kept their names (dms, dms-greeter, dms.service); only
+# packages were renamed: dms-greeter -> dux-greeter, dgop -> dux-gop.
+# dux-gop (system monitor backend) is no longer pulled in by dms, so name it.
+# dux-files provides `dfiles`. It is not made the default folder handler or
+# file-chooser portal, so GNOME keeps Nautilus.
+dnf5 -y copr enable duxlabs/dms
+dnf5 -y copr disable duxlabs/dms
 dnf5 -y install \
-  --enablerepo=copr:copr.fedorainfracloud.org:avengemedia:dms \
-  --enablerepo=coprdep:copr.fedorainfracloud.org:avengemedia:danklinux \
+  --enablerepo=copr:copr.fedorainfracloud.org:duxlabs:dms \
+  --enablerepo=coprdep:copr.fedorainfracloud.org:duxlabs:dux-repo \
   dms \
-  dms-greeter \
+  dux-greeter \
+  dux-gop \
+  dux-files \
   ghostty
 
 dnf5 remove -y alacritty
@@ -90,7 +102,7 @@ echo "quickshell smoke test passed: $qs_version"
 echo "DMS installed"
 echo "::endgroup::"
 
-echo "::group:: Configure Display Manager (greetd + dms-greeter)"
+echo "::group:: Configure Display Manager (greetd + dux-greeter)"
 
 # Replace GDM with greetd (disable first so the display-manager symlink is free).
 # greetd's session config is overlaid from system_files by build.sh.

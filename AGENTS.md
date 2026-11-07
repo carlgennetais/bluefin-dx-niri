@@ -43,7 +43,7 @@ image-template.env            # image name, org, description, default tag, BIB i
 Justfile                      # local build / disk image / VM recipes
 build_files/
   build.sh                    # main build script (system_files overlay, units)
-  niri.sh                     # niri + DMS + greetd package installs
+  niri.sh                     # niri + DMS + dux-greeter + dux-files installs
   copr-helpers.sh             # copr_install_isolated helper
 system_files/                 # copied verbatim onto / during the build
 disk_config/                  # bootc-image-builder configs (qcow2 / raw / ISO)
@@ -66,7 +66,7 @@ Then `bootc container lint` validates the result. Lint requires that any user
 created by an RPM scriptlet has a matching `sysusers.d` entry, and that `/var`
 content created by scriptlets is declared in `tmpfiles.d`. Check whether the
 package already ships those (`rpm -ql pkg | grep -E 'sysusers|tmpfiles'`) before
-adding your own — `dms-greeter` ships both, and a second declaration of the same
+adding your own — `dux-greeter` (formerly `dms-greeter`) ships both, and a second declaration of the same
 user is a trap, not a fix. `system_files/usr/lib/tmpfiles.d/greetd-dms.conf`
 covers what greetd itself leaves undeclared.
 
