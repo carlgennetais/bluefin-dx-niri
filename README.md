@@ -16,13 +16,14 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
 ### Desktop Environment
 
 - **[niri](https://github.com/niri-wm/niri)** — scrollable-tiling Wayland compositor, runs as an additional session alongside GNOME
-- **[DMS (DankMaterialShell)](https://danklinux.com)** — Material 3-inspired QtQuick shell for niri, auto-starts with the niri session
-- **[dms-greeter](https://danklinux.com/docs/dankgreeter/)** — replaces GDM with a greetd-based greeter matching the DMS aesthetic
+- **[DMS (Dux Modular Shell)](https://duxlabs.dev)** — Material 3-inspired QtQuick shell for niri (formerly DankMaterialShell), auto-starts with the niri session
+- **[dux-greeter](https://duxlabs.dev/docs/dms-greeter/)** — replaces GDM with a greetd-based greeter matching the DMS aesthetic (still launched as `dms-greeter`)
+- **[Dux Files](https://duxlabs.dev/docs/dfiles/installation)** — DMS's file manager (`dfiles`), themed with the shell. Installed alongside Nautilus, not set as the default
 - **[xwayland-satellite](https://github.com/Supreeeme/xwayland-satellite)** — rootless XWayland for running X11 apps under niri
 
 ### Applications (Build-time)
 
-- **[Ghostty](https://ghostty.org)** — GPU-accelerated terminal emulator (`avengemedia/dms` COPR)
+- **[Ghostty](https://ghostty.org)** — GPU-accelerated terminal emulator (`duxlabs/dux-repo` COPR)
 
 ### CLI Tools (Homebrew, installed at runtime)
 
@@ -54,8 +55,14 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
   home `dms-greeter`'s own `sysusers.d` declares, instead of `/var/lib/greetd`
   (which belongs to the greetd daemon user and is reset by greetd's own
   `tmpfiles.d` rule)
+- **DMS packages from Dux Labs**: DankMaterialShell was renamed Dux Modular
+  Shell and its packages moved from the `avengemedia/dms` +
+  `avengemedia/danklinux` COPRs to `duxlabs/dms` + `duxlabs/dux-repo`. Commands
+  and units (`dms`, `dms-greeter`, `dms.service`) are unchanged, so existing
+  configs keep working. `dux-gop` (the system monitor backend, formerly `dgop`)
+  is installed explicitly because `dms` no longer pulls it in
 
-*Last updated: 2026-09-29*
+*Last updated: 2026-11-07*
 
 ---
 
@@ -67,7 +74,7 @@ image-template.env            # image name, org, description, default tag, BIB i
 Justfile                      # local build / disk image / VM recipes
 build_files/
   build.sh                    # main build script (system_files overlay, units)
-  niri.sh                     # niri + DMS + greetd package installs
+  niri.sh                     # niri + DMS + dux-greeter + dux-files installs
   copr-helpers.sh             # copr_install_isolated helper
 system_files/                 # copied verbatim onto / during the build
   etc/greetd/config.toml , etc/greetd/niri_overrides.kdl
