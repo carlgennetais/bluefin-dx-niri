@@ -61,6 +61,10 @@ Based on [Bluefin DX](https://projectbluefin.io) — the developer variant of Bl
   and units (`dms`, `dms-greeter`, `dms.service`) are unchanged, so existing
   configs keep working. `dux-gop` (the system monitor backend, formerly `dgop`)
   is installed explicitly because `dms` no longer pulls it in
+- **Fonts**: `ujust install-fonts` installs Bluefin's own Nerd Font list plus
+  Meslo LG and Hack from `niri-fonts.Brewfile`. The file used to be called
+  `fonts.Brewfile`, which silently replaced Bluefin's 11-font list (also used by
+  `ujust devmode`) with 4 fonts
 
 *Last updated: 2026-11-07*
 
